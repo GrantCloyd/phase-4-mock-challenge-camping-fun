@@ -1,0 +1,16 @@
+class SignupsController < ApplicationController
+
+    def create
+        signup = Signup.create(signup_params)
+        if signup.valid?
+        activity = Activity.find(signup.activity_id)    
+        render json: activity, status: 201         
+        else
+          render json: {errors: signup.errors.full_messages}, status: 422
+        end
+       end
+
+       def signup_params
+        params.permit(:camper_id, :activity_id, :time)
+       end
+end
